@@ -2,7 +2,9 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
+	"math"
 )
 
 // coin contains the name and value of a coin
@@ -13,6 +15,8 @@ type coin struct {
 
 // coins is the list of values available for making change.
 var coins = []coin{
+	{name: "10 pound", value: 10},
+	{name: "5 pound", value: 5},
 	{name: "1 pound", value: 1},
 	{name: "50 pence", value: 0.50},
 	{name: "20 pence", value: 0.20},
@@ -23,7 +27,17 @@ var coins = []coin{
 
 // calculateChange returns the coins required to calculate the
 func calculateChange(amount float64) map[coin]int {
-	panic("NOT IMPLEMENTED")
+	change := make(map[coin]int)
+
+	for _, coin := range coins {
+		if amount >= coin.value {
+			count := math.Floor(amount / coin.value)
+			amount = amount - count*coin.value
+			change[coin] = int(count)
+		}
+	}
+	fmt.Println("coins :", change)
+	return change
 }
 
 // printCoins prints all the coins in the slice to the terminal.
